@@ -9,5 +9,5 @@ data class UsuarioInformacion(
         parentColumn = "id_usuario",
         entityColumn = "id_usuario"
     )
-    val informacion: List<Informacion>
+    val informacion: Informacion?
 )

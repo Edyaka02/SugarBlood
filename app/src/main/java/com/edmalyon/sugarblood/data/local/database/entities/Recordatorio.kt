@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
         childColumns = ["id_usuario"],
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index(value = ["id_usuario"])]
+    //indices = [Index(value = ["id_usuario"])]
 )
 data class Recordatorio(
     @PrimaryKey(autoGenerate = true) val id_recordatorio: Int = 0,
