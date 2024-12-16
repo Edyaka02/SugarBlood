@@ -3,6 +3,7 @@ package com.edmalyon.sugarblood.data.local.database.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
@@ -13,21 +14,6 @@ import com.edmalyon.sugarblood.data.local.database.relations.UsuarioConRecordato
 
 @Dao
 interface UsuarioDao {
-    @Insert
-    suspend fun insert(usuario: Usuario) : Long
-
-    @Update
-    suspend fun update(usuario: Usuario)
-
-    @Query("SELECT * FROM usuario WHERE id_usuario = :id_usuario")
-    suspend fun getUsuario(id_usuario: Int): Usuario?
-
-    @Delete
-    suspend fun delete(usuario: Usuario)
-
-    @Query("SELECT * FROM usuario")
-    suspend fun getAll(): List<Usuario>
-
     //-------------------------------------------------------------------------------------------//
     // NUEVAS FUNCIONES
     //-------------------------------------------------------------------------------------------//
@@ -36,7 +22,7 @@ interface UsuarioDao {
     // Solo usuarios
     //-------------------------------------------------------------------------------------------
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertar(usuario: Usuario) : Long
 
     @Update
@@ -44,6 +30,9 @@ interface UsuarioDao {
 
     @Query("SELECT * FROM usuario WHERE id_usuario = :id_usuario")
     suspend fun obtener(id_usuario: Int): Usuario?
+
+    @Query("SELECT * FROM usuario WHERE nombre_usuario = :nombre_usuario")
+    suspend fun obtenerNombre(nombre_usuario: String): Usuario?
 
     @Query("SELECT * FROM usuario")
     suspend fun obtenerTodos(): List<Usuario>

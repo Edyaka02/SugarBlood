@@ -1,5 +1,25 @@
 package com.edmalyon.sugarblood.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.edmalyon.sugarblood.components.MainButton
+import com.edmalyon.sugarblood.components.TitleBar
+import com.edmalyon.sugarblood.components.TitleView
+
 //import androidx.compose.foundation.layout.Arrangement
 //import androidx.compose.foundation.layout.Column
 //import androidx.compose.foundation.layout.fillMaxSize
@@ -52,3 +72,47 @@ package com.edmalyon.sugarblood.ui.screens
 //        }
 //    }
 //}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen(
+    navController: NavController,
+    usuarioId: Int
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { TitleBar(name = "Incio") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.Red
+                )
+            )
+        },
+        content = { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                TitleView(name = "Pacientes")
+                Spacer(modifier = Modifier.padding(10.dp))
+                MainButton(name = "Ver pacientes", backColor = Color.Red, color = Color.White) {
+                    //navController.navigate("login")
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                MainButton(
+                    name = "Agregar un paciente",
+                    backColor = Color.Red,
+                    color = Color.White
+                ) {
+                    //navController.navigate("registrar")
+                }
+
+            }
+        }
+    )
+}

@@ -9,18 +9,6 @@ import com.edmalyon.sugarblood.data.local.database.entities.Glucosa
 
 @Dao
 interface GlucosaDao {
-    @Insert
-    suspend fun insert(glucosa: Glucosa)
-
-    @Query("SELECT * FROM glucosa WHERE id_usuario = :id_usuario ORDER BY tiempo_glucosa DESC")
-    suspend fun getGlucosa(id_usuario: Int): List<Glucosa>
-
-    @Update
-    suspend fun update(glucosa: Glucosa)
-
-    @Delete
-    suspend fun delete(glucosa: Glucosa)
-
     // Nuevas funciones
 
     @Insert

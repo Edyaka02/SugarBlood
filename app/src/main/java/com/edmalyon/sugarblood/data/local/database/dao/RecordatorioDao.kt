@@ -9,18 +9,6 @@ import com.edmalyon.sugarblood.data.local.database.entities.Recordatorio
 
 @Dao
 interface RecordatorioDao {
-    @Insert
-    suspend fun insert(recordatorio: Recordatorio)
-
-    @Update
-    suspend fun update(recordatorio: Recordatorio)
-
-    @Query("SELECT * FROM recordatorio WHERE id_usuario = :id_usuario ORDER BY tiempo_recordatorio DESC")
-    suspend fun getRecordatorios(id_usuario: Int): List<Recordatorio>
-
-    @Delete
-    suspend fun delete(recordatorio: Recordatorio)
-
     //-------------------------------------------------------------------------------------------
     // Nuevas funciones
     //-------------------------------------------------------------------------------------------

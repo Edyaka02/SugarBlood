@@ -1,5 +1,7 @@
 package com.edmalyon.sugarblood.ui.screens.usuario
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,12 +18,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -31,8 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -46,51 +48,50 @@ import com.edmalyon.sugarblood.ui.theme.ColorSecondario
 import com.edmalyon.sugarblood.ui.theme.Imagenes
 
 @Composable
-fun RegistrarUsuarioScreen(
-    usuarioViewModel: UsuarioViewModel, //= viewModel(),
+fun LoginUsuarioScreen(
+    usuarioViewModel: UsuarioViewModel,
     navController: NavController
     // onUsuarioRegistrado: () -> Unit // Callback para navegar o realizar una acción después del registro
 ) {
     // Estados locales para los campos de entrada
-    var nombre by remember { mutableStateOf("") }
-    //var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmarPassword by remember { mutableStateOf("") }
 
-    var isDialogOpen by remember { mutableStateOf(false) }
-    var mensajeDialogo by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
-    //Observando el resultado de la inserción
-    val insercionResultado by usuarioViewModel.insercionResultado.observeAsState()
-    //Manejar los cambios en el resultado de inserción
-    LaunchedEffect(insercionResultado) {
-        insercionResultado?.let { resultado ->
-            resultado.onSuccess {
-                mensajeDialogo = "Usuario registrado exitosamente."
-                isDialogOpen = true
+    // Observando el resultado del inicio de sesión
+    val loginResult by usuarioViewModel.loginResult.observeAsState()
+    val usuarioId by usuarioViewModel.usuarioId.observeAsState()
+
+
+    // Manejar los cambios en el resultado del inicio de sesión
+    LaunchedEffect(loginResult) {
+        loginResult?.let { result ->
+            result.onSuccess { usuario ->
+                navController.navigate("home/${usuario.id_usuario}")
             }.onFailure {
-                mensajeDialogo = "El nombre de usuario ya existe"
-                isDialogOpen = true
+                Toast.makeText(
+                    context,
+                    "Usuario o contraseña incorrectos",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Brush.linearGradient(colors = listOf(ColorButton, AzulOscuro))),
-        //verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
+    ) {
         Image(
             painter = Imagenes.Logo_letras,
-            contentDescription = "Avatar",
+            contentDescription = "Logo",
             modifier = Modifier
                 .padding(top = 20.dp, bottom = 20.dp)
                 .size(150.dp)
-
         )
 
         Card(
@@ -102,16 +103,15 @@ fun RegistrarUsuarioScreen(
                 containerColor = Color.White,
                 contentColor = ColorSecondario
             ),
-            elevation = CardDefaults.cardElevation(8.dp),
-
-            ) {
+            elevation = CardDefaults.cardElevation(8.dp)
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Crea un perfil",
+                    text = "Iniciar sesión",
                     style = MaterialTheme.typography.displaySmall,
                     modifier = Modifier.padding(15.dp)
                 )
@@ -120,12 +120,12 @@ fun RegistrarUsuarioScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 8.dp, start = 8.dp),
+                    .padding(horizontal = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 OutlinedTextField(
-                    value = nombre,
-                    onValueChange = { nombre = it },
+                    value = username,
+                    onValueChange = { username = it },
                     label = { Text("Usuario") },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -136,14 +136,14 @@ fun RegistrarUsuarioScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 8.dp, start = 8.dp),
+                    .padding(horizontal = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    //visualTransformation = PasswordVisualTransformation(),
                     label = { Text("Contraseña") },
+                    visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -153,44 +153,20 @@ fun RegistrarUsuarioScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 8.dp, start = 8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                OutlinedTextField(
-                    value = confirmarPassword,
-                    onValueChange = { confirmarPassword = it },
-                    label = { Text("Confirmar Contraseña") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 16.dp),
+                    .padding(vertical = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 BotonPrincipal(
-                    name = "Registrar",
+                    name = "Iniciar sesión",
                     backBrush = Brush.linearGradient(
-                        colors = listOf(
-                            ColorButton,
-                            AzulOscuro
-                        )
+                        colors = listOf(ColorButton, AzulOscuro)
                     ),
                     color = Color.White
                 ) {
-                    if (nombre.isNotBlank() && password.isNotBlank() && confirmarPassword.isNotBlank()) {
-                        val nuevoUsuario = Usuario(
-                            id_usuario = 0,
-                            nombre_usuario = nombre,
-                            password_usuario = password,
-                            password_confirmar_usuario = confirmarPassword
-                        )
-                        usuarioViewModel.registrarUsuario(nuevoUsuario)
-                        isDialogOpen = true
+                    if (username.isNotBlank() && password.isNotBlank()) {
+                        usuarioViewModel.iniciarSesion(username, password)
+                    } else {
+                        Toast.makeText(context, "Llene los campos", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -198,63 +174,30 @@ fun RegistrarUsuarioScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 16.dp),
+                    .padding(vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                Box(
-                    modifier = Modifier
-                    //.padding(end = 8.dp)
-                ) {
+                Box {
                     Text(
-                        text = "¿Ya tienes una cuenta?",
+                        text = "¿No tienes una cuenta?",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                Box(
-                    modifier = Modifier
-                    //.padding(start = 8.dp),
-                ) {
+                Box {
                     BotonPrincipal(
-                        name = "Iniciar sesión",
+                        name = "Registrarse",
                         backBrush = Brush.linearGradient(
-                            colors = listOf(
-                                Color.White,
-                                Color.White
-                            )
+                            colors = listOf(Color.White, Color.White)
                         ),
                         color = ColorPrimario
                     ) {
-                        navController.navigate("login")
+                        navController.navigate("registrarUsuario")
                     }
                 }
             }
 
-
         }
-
     }
 
-    if (isDialogOpen) {
-        AlertDialog(
-            onDismissRequest = { isDialogOpen = false },
-            title = { Text("Registro de Usuario") },
-            text = { Text(mensajeDialogo) },
-            containerColor = Color.White,
-            confirmButton = {
-                BotonPrincipal(
-                    name = "OK",
-                    backBrush = Brush.linearGradient(
-                        colors = listOf(
-                            ColorButton,
-                            AzulOscuro
-                        )
-                    ),
-                    color = Color.White
-                ) {
-                    isDialogOpen = false
-                }
-            }
-        )
-    }
 }

@@ -8,9 +8,6 @@ import com.edmalyon.sugarblood.data.local.database.dao.GlucosaDao
 import com.edmalyon.sugarblood.data.local.database.dao.InformacionDao
 import com.edmalyon.sugarblood.data.local.database.dao.RecordatorioDao
 import com.edmalyon.sugarblood.data.local.database.dao.UsuarioDao
-import com.edmalyon.sugarblood.data.local.database.dao.UsuarioGlucosaDao
-import com.edmalyon.sugarblood.data.local.database.dao.UsuarioInformacionDao
-import com.edmalyon.sugarblood.data.local.database.dao.UsuarioRecordatorioDao
 import com.edmalyon.sugarblood.data.local.database.entities.Glucosa
 import com.edmalyon.sugarblood.data.local.database.entities.Informacion
 import com.edmalyon.sugarblood.data.local.database.entities.Recordatorio
@@ -23,7 +20,7 @@ import com.edmalyon.sugarblood.data.local.database.entities.Usuario
         Informacion::class,
         Usuario::class
     ],
-    version = 2,
+    version = 4,
     exportSchema = false
 )
 
@@ -32,10 +29,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun glucosaDao(): GlucosaDao
     abstract fun informacionDao(): InformacionDao
     abstract fun usuarioDao(): UsuarioDao
-
-    abstract fun usuarioRecordatorioDao(): UsuarioRecordatorioDao
-    abstract fun usuarioInformacionDao(): UsuarioInformacionDao
-    abstract fun usuarioGlucosaDao(): UsuarioGlucosaDao
 
     companion object {
         @Volatile

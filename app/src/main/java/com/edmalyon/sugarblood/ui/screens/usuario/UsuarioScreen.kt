@@ -28,14 +28,17 @@ fun UsuarioScreen(usuarioViewModel: UsuarioViewModel = viewModel()) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text("Nombre: ${usuario.nombre_usuario}")
-            Text("Correo: ${usuario.email_usuario}")
+//            Text("Nombre: ${usuario.nombre_usuario}")
+//            Text("Correo: ${usuario.email_usuario}")
             // Agrega más campos si lo necesitas
         }
     } ?: run {
         // Si no se ha obtenido el usuario aún, mostramos un cargando
         CircularProgressIndicator()
     }
+
+
+
 }
 
 

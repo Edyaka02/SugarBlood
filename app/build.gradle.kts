@@ -54,22 +54,11 @@ android {
 
 dependencies {
     implementation(libs.androidx.runtime.livedata)
-    implementation(libs.androidx.navigation.compose)
+    //implementation(libs.androidx.navigation.compose)
     implementation (libs.androidx.activity)
-    val navigationVersion = "2.6.0"
-    val room_version = "2.6.1"
-    //val hiltVersion = "2.48"
-    //val coroutineVersion = "1.5.2"
+    implementation(libs.androidx.espresso.core)
 
-//    // Navegación
-//    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
-//    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
-
-//    // Room
-//    implementation("androidx.room:room-runtime:$roomVersion")
-//    kapt("androidx.room:room-compiler:$roomVersion")
-//    implementation("androidx.room:room-ktx:$roomVersion")
-
+    // Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     // optional - Kotlin Extensions and Coroutines support for Room
@@ -90,15 +79,19 @@ dependencies {
     // optional - Paging 3 Integration
     implementation(libs.androidx.room.paging)
 
+    // Navigation for Compose
+    implementation ("androidx.navigation:navigation-compose:2.5.3")
 
 
-//     Hilt
-//    implementation("com.google.dagger:hilt-android:$hiltVersion")
-//    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
-//    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    //Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    implementation (libs.androidx.material)
+
+
 
 
 

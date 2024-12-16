@@ -1,8 +1,8 @@
 package com.edmalyon.sugarblood.data.local.database.repository
 
+import android.database.sqlite.SQLiteConstraintException
 import com.edmalyon.sugarblood.data.local.database.dao.UsuarioDao
 import com.edmalyon.sugarblood.data.local.database.entities.Usuario
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UsuarioRepository @Inject constructor(
@@ -13,10 +13,29 @@ class UsuarioRepository @Inject constructor(
         return usuarioDao.obtener(id_usuario)
     }
 
-    // Insertar un usuario
-    suspend fun insertarUsuario(usuario: Usuario) {
-        usuarioDao.insertar(usuario)
+    suspend fun iniciarSesion(username: String, password: String): Result<Usuario> {
+        return try {
+            val usuario =
+                usuarioDao.obtenerNombre(username)
+            if (usuario != null && usuario.password_usuario == password) {
+                Result.success(usuario)
+            } else {
+                Result.failure(Exception("Credenciales incorrectas"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
+
+    suspend fun insertarUsuario(usuario: Usuario): Result<Unit> {
+        return try {
+            usuarioDao.insertar(usuario)
+            Result.success(Unit)
+        } catch (e: SQLiteConstraintException) {
+            Result.failure(e)
+        }
+    }
+
 
     // Actualizar un usuario
     suspend fun actualizarUsuario(usuario: Usuario) {

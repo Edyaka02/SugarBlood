@@ -9,18 +9,6 @@ import com.edmalyon.sugarblood.data.local.database.entities.Informacion
 
 @Dao
 interface InformacionDao {
-    @Insert
-    suspend fun insert(informacion: Informacion)
-
-    @Update
-    suspend fun update(informacion: Informacion)
-
-    @Query("SELECT * FROM informacion WHERE id_usuario = :id_usuario")
-    suspend fun getInformacion(id_usuario: Int): Informacion?
-
-    @Delete
-    suspend fun delete(informacion: Informacion)
-
     //-------------------------------------------------------------------------------------------
     // Nuevas funciones
     //-------------------------------------------------------------------------------------------
