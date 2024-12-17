@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -107,8 +108,15 @@ fun ListaGlucosaScreen(
                         }
                     } else {
                         // Si hay registros, los mostramos
+//                        items(glucosaList) { glucosa ->
+//                            GlucosaItem(glucosa)
+//                        }
                         items(glucosaList) { glucosa ->
-                            GlucosaItem(glucosa)
+                            GlucosaItem(glucosa) { glucosaAEliminar ->
+                                glucosaViewModel.eliminarGlucosa(
+                                    glucosaAEliminar
+                                )
+                            }
                         }
                     }
                 }
@@ -120,7 +128,7 @@ fun ListaGlucosaScreen(
 }
 
 @Composable
-fun GlucosaItem(glucosa: Glucosa) {
+fun GlucosaItem(glucosa: Glucosa, onDelete: (Glucosa) -> Unit) {
     // Mostrar cada registro de glucosa en una fila
     var fecha = convertirMilisegundosAFecha(glucosa.tiempo_glucosa)
     Card(
@@ -160,6 +168,10 @@ fun GlucosaItem(glucosa: Glucosa) {
             ) {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Editar")
             }
+            IconButton(
+                onClick = { onDelete(glucosa) },
+                modifier = Modifier.padding(start = 8.dp)
+            ) { Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar") }
         }
     }
 }

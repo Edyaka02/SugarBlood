@@ -40,7 +40,7 @@ fun BottomNavBar(
             },
             selected = false,
             onClick = {
-                navController.navigate("home/${usuarioId}") {
+                navController.navigate("listaGlucosa/${usuarioId}") {
                     // Puedes usar 'popUpTo' para limpiar el backstack si es necesario
                     launchSingleTop = true
                 }

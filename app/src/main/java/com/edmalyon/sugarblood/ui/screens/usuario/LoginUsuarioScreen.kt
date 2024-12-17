@@ -68,7 +68,8 @@ fun LoginUsuarioScreen(
     LaunchedEffect(loginResult) {
         loginResult?.let { result ->
             result.onSuccess { usuario ->
-                navController.navigate("home/${usuario.id_usuario}")
+                //navController.navigate("home/${usuario.id_usuario}")
+                navController.navigate("listaGlucosa/${usuario.id_usuario}")
             }.onFailure {
                 Toast.makeText(
                     context,

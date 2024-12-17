@@ -83,9 +83,10 @@ fun RegistrarUsuarioScreen(
     LaunchedEffect(insercionResultado) {
         insercionResultado?.let { resultado ->
             resultado.onSuccess { usuarioId ->
-                mensajeDialogo = "Usuario registrado exitosamente."
-                isDialogOpen = true
-                navController.navigate("home/${usuarioId}")
+                //mensajeDialogo = "Usuario registrado exitosamente."
+                //isDialogOpen = true
+                //navController.navigate("home/${usuarioId}")
+                navController.navigate("listaGlucosa/${usuarioId}")
             }.onFailure {
                 mensajeDialogo = "El nombre de usuario ya existe"
                 isDialogOpen = true
