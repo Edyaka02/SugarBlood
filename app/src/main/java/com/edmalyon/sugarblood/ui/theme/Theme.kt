@@ -52,7 +52,7 @@ fun SugarBloodTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = myTypography,
         content = content
     )
 }

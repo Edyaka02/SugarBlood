@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
         childColumns = ["id_usuario"],
         onDelete = ForeignKey.CASCADE
     )],
-    indices = [Index(value = ["id_usuario"])]
+    //indices = [Index(value = ["id_usuario"])]
 )
 data class Glucosa(
     @PrimaryKey(autoGenerate = true) val id_glucosa: Int = 0,

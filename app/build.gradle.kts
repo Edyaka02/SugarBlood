@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -51,20 +53,46 @@ android {
 }
 
 dependencies {
-    val navigationVersion = "2.5.3"
-    val roomVersion = "2.6.1"
-
-    // Navegación
-    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
+    implementation(libs.androidx.runtime.livedata)
+    //implementation(libs.androidx.navigation.compose)
+    implementation (libs.androidx.activity)
+    implementation(libs.androidx.espresso.core)
 
     // Room
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation(libs.androidx.room.ktx)
 
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    // optional - RxJava2 support for Room
+    implementation(libs.androidx.room.rxjava2)
+
+    // optional - RxJava3 support for Room
+    implementation(libs.androidx.room.rxjava3)
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation(libs.androidx.room.guava)
+
+    // optional - Test helpers
+    testImplementation(libs.androidx.room.testing)
+
+    // optional - Paging 3 Integration
+    implementation(libs.androidx.room.paging)
+
+    // Navigation for Compose
+    implementation ("androidx.navigation:navigation-compose:2.5.3")
+
+
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    implementation (libs.androidx.material)
+
+
+
 
 
     //--------------------------------------------------------------------------------------
@@ -84,4 +112,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+kapt {
+    correctErrorTypes = true
 }
