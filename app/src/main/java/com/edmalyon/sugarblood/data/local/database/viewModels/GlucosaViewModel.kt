@@ -35,4 +35,12 @@ class GlucosaViewModel @Inject constructor(
             }
         }
     }
+
+    fun eliminarGlucosa(glucosa: Glucosa) {
+        viewModelScope.launch {
+            glucosaRepository.eliminarGlucosa(glucosa)
+            obtenerGlucosaPorUsuario(glucosa.id_usuario) // Actualiza la lista después de eliminar
+        }
+    }
+
 }

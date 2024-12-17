@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,8 +20,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +29,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -67,6 +64,7 @@ fun RegistrarGlucosaScreen(
         mutableStateOf("Seleccione una opción")
     }
     var isDialogOpen by remember { mutableStateOf(false) }
+    var useMmol by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -91,9 +89,21 @@ fun RegistrarGlucosaScreen(
                 OutlinedTextField(
                     value = valorGlucosa,
                     onValueChange = { valorGlucosa = it },
-                    label = { Text("Nivel de Glucosa") },
+                    //label = { Text("Nivel de Glucosa") },
+                    label = { Text("Nivel de Glucosa (${if (useMmol) "mmol/L" else "mg/dL"})") },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                 )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(top = 16.dp)
+                ) {
+                    Checkbox(
+                        checked = useMmol,
+                        onCheckedChange = { useMmol = it }
+                    )
+                    Text (text = "Usar mmol/L")
+                }
 
                 var bottomSheetVisible by remember { mutableStateOf(false) }
 
@@ -163,21 +173,30 @@ fun RegistrarGlucosaScreen(
                             momentoGlucosa = ""
                         }
 
-                        if (valorGlucosa.isNotBlank()) {
+                        if (valorGlucosa.isNotBlank() ) {
                             momentoGlucosa = selectedOption
+                            val valorGlucosaFinal = if (useMmol) valorGlucosa.toFloat() * 18f else valorGlucosa.toFloat()
                             val nuevaGlucosa = Glucosa(
                                 tiempo_glucosa = System.currentTimeMillis(),
                                 momento_glucosa = momentoGlucosa,
-                                valor_glucosa = valorGlucosa.toFloat(),
+                                valor_glucosa = valorGlucosaFinal,
                                 peso_glucosa = pesoGlucosa.toFloat(),
                                 nota_glucosa = notaGlucosa,
                                 id_usuario = usuarioId
                             )
                             glucosaViewModel.insertarGlucosa(nuevaGlucosa)
-                            Toast.makeText(context, "Llene el campo de la glucosa", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Registrado exitosamente",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             //isDialogOpen = true
                         } else {
-                            Toast.makeText(context, "Llene el campo de la glucosa", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Llene el campo de la glucosa",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
