@@ -26,8 +26,8 @@ class UsuarioViewModel @Inject constructor(
     val usuario: State<Usuario?> get() = _usuario
 
     //LiveData para resultados de inserción
-    private val _insercionResultado = MutableLiveData<Result<Unit>>()
-    val insercionResultado: LiveData<Result<Unit>> get() = _insercionResultado
+    private val _insercionResultado = MutableLiveData<Result<Long>>()
+    val insercionResultado: LiveData<Result<Long>> get() = _insercionResultado
 
     private val _loginResult = MutableLiveData<Result<Usuario>>()
     val loginResult: LiveData<Result<Usuario>> get() = _loginResult
@@ -77,9 +77,18 @@ class UsuarioViewModel @Inject constructor(
                 //usuarioRepository.insertarUsuario(usuario)
                 val resultado = usuarioRepository.insertarUsuario(usuario)
                 _insercionResultado.value = resultado
+                if (resultado.isSuccess) {
+                    val usuarioId = resultado.getOrNull()
+                    if (usuarioId != null) {
+                        _usuarioId.value = usuarioId.toInt()
+                        _isAuthenticated.value = true
+                    } else
+                        _isAuthenticated.value = false
+                }
             } catch (e: Exception) {
                 Log.e("UsuarioViewModel", "Error registrando usuario: ${e.message}")
                 _insercionResultado.value = Result.failure(e)
+                _isAuthenticated.value = false
             }
         }
     }

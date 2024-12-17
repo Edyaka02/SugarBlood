@@ -27,10 +27,10 @@ class UsuarioRepository @Inject constructor(
         }
     }
 
-    suspend fun insertarUsuario(usuario: Usuario): Result<Unit> {
+    suspend fun insertarUsuario(usuario: Usuario): Result<Long> {
         return try {
-            usuarioDao.insertar(usuario)
-            Result.success(Unit)
+            val id = usuarioDao.insertar(usuario)
+            Result.success(id)
         } catch (e: SQLiteConstraintException) {
             Result.failure(e)
         }
