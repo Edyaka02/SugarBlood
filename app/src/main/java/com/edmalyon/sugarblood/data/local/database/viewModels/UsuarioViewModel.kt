@@ -96,5 +96,6 @@ class UsuarioViewModel @Inject constructor(
     // Función para cerrar sesión
     fun logout() {
         _isAuthenticated.value = false // Restablecer el estado de autenticación
+        //usuarioId.value = null
     }
 }

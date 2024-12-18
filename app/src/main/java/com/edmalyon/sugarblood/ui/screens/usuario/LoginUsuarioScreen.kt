@@ -66,13 +66,13 @@ fun LoginUsuarioScreen(
     val loginResult by usuarioViewModel.loginResult.observeAsState()
     val usuarioId by usuarioViewModel.usuarioId.observeAsState()
 
-
     // Manejar los cambios en el resultado del inicio de sesión
     LaunchedEffect(loginResult) {
         loginResult?.let { result ->
             result.onSuccess { usuario ->
                 //navController.navigate("home/${usuario.id_usuario}")
                 navController.navigate("listaGlucosa/${usuario.id_usuario}")
+
             }.onFailure {
                 Toast.makeText(
                     context,

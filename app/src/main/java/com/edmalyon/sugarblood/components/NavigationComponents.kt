@@ -18,8 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edmalyon.sugarblood.R
+import com.edmalyon.sugarblood.data.local.database.viewModels.UsuarioViewModel
 
 @Composable
 fun BottomNavBar(
@@ -30,6 +32,8 @@ fun BottomNavBar(
         backgroundColor = Color.White,
         contentColor = Color.Black
     ) {
+        // Obtén el ViewModel
+        val usuarioViewModel: UsuarioViewModel = viewModel()
         // Glucosa
         BottomNavigationItem(
             icon = {
@@ -95,7 +99,14 @@ fun BottomNavBar(
             selected = false, // Controlar si este ítem está seleccionado
             onClick = {
                 // Navegar a la pantalla de configuración
-                navController.navigate("listaGlucosa/${usuarioId}") {
+//                navController.navigate("listaGlucosa/${usuarioId}") {
+//                    launchSingleTop = true
+//                }
+                usuarioViewModel.logout()
+                navController.navigate("login") {
+
+                    // Esto asegura que el login será la única pantalla en el backstack
+                    popUpTo("login") { inclusive = true }
                     launchSingleTop = true
                 }
             }
