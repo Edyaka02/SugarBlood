@@ -20,7 +20,7 @@ import com.edmalyon.sugarblood.data.local.database.entities.Usuario
         Informacion::class,
         Usuario::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 

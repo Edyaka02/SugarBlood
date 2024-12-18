@@ -60,7 +60,6 @@ dependencies {
 
     // Room
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.appcompat)
     ksp(libs.androidx.room.compiler)
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation(libs.androidx.room.ktx)
@@ -92,7 +91,7 @@ dependencies {
 
     implementation (libs.androidx.material)
 
-
+    implementation ("androidx.appcompat:appcompat:1.7.0")
 
 
 

@@ -1,10 +1,8 @@
 package com.edmalyon.sugarblood.navigation
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -14,28 +12,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.edmalyon.sugarblood.components.BottomNavBar
 import com.edmalyon.sugarblood.data.local.database.viewModels.GlucosaViewModel
 import com.edmalyon.sugarblood.data.local.database.viewModels.UsuarioViewModel
 import com.edmalyon.sugarblood.ui.screens.HomeScreen
+import com.edmalyon.sugarblood.ui.screens.glucosa.EditarGlucosaScreen
 import com.edmalyon.sugarblood.ui.screens.glucosa.ListaGlucosaScreen
 import com.edmalyon.sugarblood.ui.screens.glucosa.RegistrarGlucosaScreen
 import com.edmalyon.sugarblood.ui.screens.usuario.LoginUsuarioScreen
 import com.edmalyon.sugarblood.ui.screens.usuario.RegistrarUsuarioScreen
-
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Modifier
-//import androidx.navigation.NavHostController
-//import androidx.navigation.compose.NavHost
-//import androidx.navigation.compose.composable
-//import androidx.navigation.compose.rememberNavController
-//import com.edmalyon.sugarblood.ui.screens.HomeScreen
-//import com.edmalyon.sugarblood.ui.screens.MisUsuariosScreen
-//import com.edmalyon.sugarblood.ui.screens.RegistroUsuarioScreen
-//import com.edmalyon.sugarblood.ui.screens.UsuarioScreen
-
 
 @Composable
 fun AppHost(navController: NavHostController) {
@@ -76,7 +62,8 @@ fun AppHost(navController: NavHostController) {
                 route = "listaGlucosa/{id_usuario}", // Definir la ruta con el argumento
                 arguments = listOf(navArgument("id_usuario") { type = NavType.IntType })
             ) { backStackEntry ->
-                val id_usuario = backStackEntry.arguments?.getInt("id_usuario") ?: 0 // Obtener el argumento
+                val id_usuario =
+                    backStackEntry.arguments?.getInt("id_usuario") ?: 0 // Obtener el argumento
                 ListaGlucosaScreen(
                     navController = navController,
                     glucosaViewModel = hiltViewModel(),
@@ -88,11 +75,40 @@ fun AppHost(navController: NavHostController) {
                 route = "registrarGlucosa/{id_usuario}", // Definir la ruta con el argumento
                 arguments = listOf(navArgument("id_usuario") { type = NavType.IntType })
             ) { backStackEntry ->
-                val id_usuario = backStackEntry.arguments?.getInt("id_usuario") ?: 0 // Obtener el argumento
+                val id_usuario =
+                    backStackEntry.arguments?.getInt("id_usuario") ?: 0 // Obtener el argumento
                 RegistrarGlucosaScreen(
                     navController = navController,
                     glucosaViewModel = glucosaViewModel,
                     usuarioId = id_usuario
+                )
+            }
+
+//            composable(
+//                route = "editarGlucosa/{id_glucosa}/{id_usuario}",
+//                arguments = listOf(navArgument("id_glucosa") { type = NavType.IntType },
+//                    navArgument("id_usuario") { type = NavType.IntType })
+//            ) { backStackEntry ->
+//                val id_glucosa = backStackEntry.arguments?.getInt("id_glucosa") ?: 0
+//                val id_usuario = backStackEntry.arguments?.getInt("id_usuario")
+//                    ?: 0
+//                RegistrarGlucosaScreen (
+//                    navController = navController,
+//                    glucosaViewModel = glucosaViewModel,
+//                    usuarioId = id_usuario,
+//                    glucosaId = id_glucosa
+//                )
+//            }
+            composable(
+                route = "editarGlucosa/{id_glucosa}",
+                arguments = listOf(navArgument("id_glucosa") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val id_glucosa = backStackEntry.arguments?.getInt("id_glucosa") ?: 0
+                EditarGlucosaScreen (
+                    navController = navController,
+                    glucosaViewModel = glucosaViewModel,
+                    usuarioId = usuarioId,
+                    glucosaId = id_glucosa
                 )
             }
 
@@ -101,7 +117,7 @@ fun AppHost(navController: NavHostController) {
                 arguments = listOf(navArgument("id_usuario") { type = NavType.IntType })
             ) { backStackEntry ->
                 val id_usuario = backStackEntry.arguments?.getInt("id_usuario") ?: 0
-                HomeScreen (navController = navController, usuarioId = id_usuario)
+                HomeScreen(navController = navController, usuarioId = id_usuario)
             }
         }
     }

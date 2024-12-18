@@ -42,6 +42,9 @@ import com.edmalyon.sugarblood.components.BotonPrincipal
 import com.edmalyon.sugarblood.data.local.database.entities.Usuario
 import com.edmalyon.sugarblood.data.local.database.viewModels.UsuarioViewModel
 import com.edmalyon.sugarblood.ui.theme.AzulOscuro
+import com.edmalyon.sugarblood.ui.theme.Color1
+import com.edmalyon.sugarblood.ui.theme.Color2
+import com.edmalyon.sugarblood.ui.theme.Color3
 import com.edmalyon.sugarblood.ui.theme.ColorButton
 import com.edmalyon.sugarblood.ui.theme.ColorPrimario
 import com.edmalyon.sugarblood.ui.theme.ColorSecondario
@@ -63,13 +66,13 @@ fun LoginUsuarioScreen(
     val loginResult by usuarioViewModel.loginResult.observeAsState()
     val usuarioId by usuarioViewModel.usuarioId.observeAsState()
 
-
     // Manejar los cambios en el resultado del inicio de sesión
     LaunchedEffect(loginResult) {
         loginResult?.let { result ->
             result.onSuccess { usuario ->
                 //navController.navigate("home/${usuario.id_usuario}")
                 navController.navigate("listaGlucosa/${usuario.id_usuario}")
+
             }.onFailure {
                 Toast.makeText(
                     context,
@@ -84,7 +87,15 @@ fun LoginUsuarioScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.linearGradient(colors = listOf(ColorButton, AzulOscuro))),
+            .background(
+                Brush.linearGradient(
+                    colors = listOf(
+                        Color1,
+                        Color2,
+                        Color3
+                    )
+                )
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -160,7 +171,11 @@ fun LoginUsuarioScreen(
                 BotonPrincipal(
                     name = "Iniciar sesión",
                     backBrush = Brush.linearGradient(
-                        colors = listOf(ColorButton, AzulOscuro)
+                        colors = listOf(
+                            Color1,
+                            Color2,
+                            Color3
+                        )
                     ),
                     color = Color.White
                 ) {
