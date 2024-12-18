@@ -16,6 +16,7 @@ roomRxjava2 = "2.6.1"
 runtimeLivedata = "1.7.5"
 navigationCompose = "2.8.4"
 appcompat = "1.7.0"
+datastoreCoreAndroid = "1.1.1"
 
 
 [libraries]
@@ -48,6 +49,7 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 material-icons-filled = { module = "androidx.compose.material.icons.filled:material-icons-filled", version.ref = "materialIconsFilledVersion" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

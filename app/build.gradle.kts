@@ -61,6 +61,7 @@ dependencies {
     // Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.datastore.core.android)
     ksp(libs.androidx.room.compiler)
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation(libs.androidx.room.ktx)
@@ -83,8 +84,8 @@ dependencies {
     // Navigation for Compose
     implementation ("androidx.navigation:navigation-compose:2.5.3")
 
-
-
+    implementation("com.airbnb.android:lottie-compose:5.2.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
     //Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
@@ -93,7 +94,8 @@ dependencies {
     implementation (libs.androidx.material)
 
 
-
+    implementation ("com.google.accompanist:accompanist-pager:0.21.0-beta")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.21.0-beta")
 
 
     //--------------------------------------------------------------------------------------

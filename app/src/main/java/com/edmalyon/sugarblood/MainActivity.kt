@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.edmalyon.sugarblood.navigation.AppHost
+import com.edmalyon.sugarblood.ui.onboarding.navigation.NavManager
 import com.edmalyon.sugarblood.ui.screens.glucosa.ListaGlucosaScreen
 import com.edmalyon.sugarblood.ui.screens.glucosa.RegistrarGlucosaScreen
 import com.edmalyon.sugarblood.ui.screens.usuario.LoginUsuarioScreen
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
                 //RegistrarUsuarioScreen()
                 //LoginUsuarioScreen()
                 AppHost(navController)
+                //NavManager()
             }
         }
     }
