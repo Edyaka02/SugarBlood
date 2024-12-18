@@ -48,40 +48,40 @@ fun BottomNavBar(
         )
 
         // Ítem de registros
-        BottomNavigationItem(
-            icon = {
-                CustomIcon(
-                    iconResId = R.drawable.grafica,
-                    contentDescription = "Profile"
-                )
-            },
-            //label = { Text("registros") },
-            selected = false, // Controlar si este ítem está seleccionado
-            onClick = {
-                // Navegar a la pantalla de perfil
-                navController.navigate("listaGlucosa/${usuarioId}") {
-                    launchSingleTop = true
-                }
-            }
-        )
+//        BottomNavigationItem(
+//            icon = {
+//                CustomIcon(
+//                    iconResId = R.drawable.grafica,
+//                    contentDescription = "Profile"
+//                )
+//            },
+//            //label = { Text("registros") },
+//            selected = false, // Controlar si este ítem está seleccionado
+//            onClick = {
+//                // Navegar a la pantalla de perfil
+//                navController.navigate("listaGlucosa/${usuarioId}") {
+//                    launchSingleTop = true
+//                }
+//            }
+//        )
 
         // Ítem de alarmas
-        BottomNavigationItem(
-            icon = {
-                CustomIcon(
-                    iconResId = R.drawable.alarma,
-                    contentDescription = "Profile"
-                )
-            },
-            //label = { Text("registros") },
-            selected = false, // Controlar si este ítem está seleccionado
-            onClick = {
-                // Navegar a la pantalla de perfil
-                navController.navigate("listaGlucosa/${usuarioId}") {
-                    launchSingleTop = true
-                }
-            }
-        )
+//        BottomNavigationItem(
+//            icon = {
+//                CustomIcon(
+//                    iconResId = R.drawable.alarma,
+//                    contentDescription = "Profile"
+//                )
+//            },
+//            //label = { Text("registros") },
+//            selected = false, // Controlar si este ítem está seleccionado
+//            onClick = {
+//                // Navegar a la pantalla de perfil
+//                navController.navigate("listaGlucosa/${usuarioId}") {
+//                    launchSingleTop = true
+//                }
+//            }
+//        )
 
         // Ítem de Configuración
         BottomNavigationItem(

@@ -1,6 +1,7 @@
 package com.edmalyon.sugarblood.ui.screens.glucosa
 
 import android.icu.text.SimpleDateFormat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,9 +13,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -29,16 +33,28 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.edmalyon.sugarblood.components.BotonPrincipal
+import com.edmalyon.sugarblood.components.CustomFloatingActionButton
+import com.edmalyon.sugarblood.components.CustomTopAppBar
+import com.edmalyon.sugarblood.components.MainIconButton
 import com.edmalyon.sugarblood.components.TitleBar
 import com.edmalyon.sugarblood.data.local.database.entities.Glucosa
 import com.edmalyon.sugarblood.data.local.database.viewModels.GlucosaViewModel
+import com.edmalyon.sugarblood.ui.theme.AzulOscuro
+import com.edmalyon.sugarblood.ui.theme.Color1
+import com.edmalyon.sugarblood.ui.theme.Color2
+import com.edmalyon.sugarblood.ui.theme.Color3
 import com.edmalyon.sugarblood.ui.theme.ColorButton
 import com.edmalyon.sugarblood.ui.theme.ColorPrimario
 import com.edmalyon.sugarblood.ui.theme.ColorSecondario
@@ -63,24 +79,32 @@ fun ListaGlucosaScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { TitleBar(name = "Registros de glucosa") },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = ColorButton
-                )
+            CustomTopAppBar(
+                title = "Registros",
+                backBrush = Brush.linearGradient(
+                    colors = listOf(
+                        Color1,
+                        Color2
+                    )
+                ),
+                color = Color.White
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+
+            CustomFloatingActionButton(
                 onClick = { navController.navigate("registrarGlucosa/$usuarioId") },
-                containerColor = ColorButton,
-                contentColor = Color.White
-            ) {
-                Icon(
-                    Icons.Default.Add,
-                    contentDescription = "Agregar Registro"
-                )
-            }
+                backBrush = Brush.linearGradient(
+                    colors = listOf(
+                        Color1,
+                        Color3
+                    )
+                ),
+                contentColor = Color.White,
+                icon = Icons.Default.Add,
+                contentDescription = ""
+            )
+
         },
         content = { innerPadding ->
             Column(
@@ -107,16 +131,17 @@ fun ListaGlucosaScreen(
                             )
                         }
                     } else {
-                        // Si hay registros, los mostramos
-//                        items(glucosaList) { glucosa ->
-//                            GlucosaItem(glucosa)
-//                        }
-                        items(glucosaList) { glucosa ->
-                            GlucosaItem(glucosa) { glucosaAEliminar ->
-                                glucosaViewModel.eliminarGlucosa(
-                                    glucosaAEliminar
-                                )
-                            }
+                        val glucosaListOrdenada = glucosaList.sortedByDescending { it.tiempo_glucosa }
+                        items(glucosaListOrdenada) { glucosa ->
+                            GlucosaItem(
+                                glucosa,
+                                onEdit = { glucosaAEditar ->
+                                    navController.navigate("editarGlucosa/${glucosaAEditar.id_glucosa}")
+                                },
+                                onDelete = { glucosaAEliminar ->
+                                    glucosaViewModel.eliminarGlucosa(glucosaAEliminar)
+                                }
+                            )
                         }
                     }
                 }
@@ -128,17 +153,72 @@ fun ListaGlucosaScreen(
 }
 
 @Composable
-fun GlucosaItem(glucosa: Glucosa, onDelete: (Glucosa) -> Unit) {
-    // Mostrar cada registro de glucosa en una fila
-    var fecha = convertirMilisegundosAFecha(glucosa.tiempo_glucosa)
+fun GlucosaItem(glucosa: Glucosa, onEdit: (Glucosa) -> Unit, onDelete: (Glucosa) -> Unit) {
+    val fecha = convertirMilisegundosAFecha(glucosa.tiempo_glucosa)
+    var showDialog by remember { mutableStateOf(false) }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("Confirmar Eliminación") },
+            text = { Text("¿Está seguro de que desea eliminar este registro?") },
+            containerColor = Color.White,
+            confirmButton = {
+
+                BotonPrincipal(
+                    name = "Eliminar",
+                    backBrush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(188, 58, 58),
+                            Color(253, 29, 29),
+                            Color(252, 152, 69)
+                        )
+                    ),
+                    color = Color.White
+                ) {
+                    onDelete(glucosa)
+                    showDialog = false
+                }
+            },
+            dismissButton = {
+//                Button(onClick = { showDialog = false }) {
+//                    Text("Cancelar")
+//                }
+
+                BotonPrincipal(
+                    name = "Cancelar",
+                    backBrush = Brush.linearGradient(
+                        colors = listOf(
+                            Color1,
+                            Color3
+                        )
+                    ),
+                    color = Color.White
+                ) {
+                    showDialog = false
+                }
+            }
+        )
+    }
+
+
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(25.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
-            contentColor = ColorSecondario
+            containerColor = when {
+                glucosa.valor_glucosa < 70 -> Color(252, 164, 126)// Nivel bajo
+                glucosa.valor_glucosa in 70.0..140.0 -> Color(176, 242, 180) // Nivel normal
+                else -> Color(245, 61, 88) // Nivel alto
+            },
+            contentColor = when {
+                glucosa.valor_glucosa < 70 -> Color.Black // Texto oscuro para nivel bajo
+                glucosa.valor_glucosa in 70.0..140.0 -> Color.DarkGray // Texto oscuro para nivel normal
+                else -> Color.White // Texto claro para nivel alto
+            }
         ),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
@@ -151,34 +231,42 @@ fun GlucosaItem(glucosa: Glucosa, onDelete: (Glucosa) -> Unit) {
         ) {
             Column {
                 Text(
-                    text = "Nivel de Glucosa: ${glucosa.valor_glucosa}",
+                    text = "Glucosa: ${glucosa.valor_glucosa} mg/dL",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
                     text = "Fecha: $fecha",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
+                    color = when {
+                        glucosa.valor_glucosa < 70 -> Color.Black // Texto oscuro para nivel bajo
+                        glucosa.valor_glucosa in 70.0..140.0 -> Color.DarkGray // Texto oscuro para nivel normal
+                        else -> Color.White // Texto claro para nivel alto
+                    }
                 )
             }
 
-            // Puedes agregar más detalles aquí, como un ícono de editar o eliminar
-            IconButton(
-                onClick = { /* Acción para editar o eliminar */ },
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = "Editar")
+            Row {
+                IconButton(
+                    onClick = { onEdit(glucosa) },
+                    modifier = Modifier.padding(start = 30.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Editar")
+                }
+                IconButton(
+                    onClick = { showDialog = true },
+                    modifier = Modifier.padding(start = 8.dp)
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar")
+                }
             }
-            IconButton(
-                onClick = { onDelete(glucosa) },
-                modifier = Modifier.padding(start = 8.dp)
-            ) { Icon(imageVector = Icons.Default.Delete, contentDescription = "Eliminar") }
         }
     }
 }
 
+
 fun convertirMilisegundosAFecha(milisegundos: Long): String {
     val date = Date(milisegundos)
     val dateFormat =
-        SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     return dateFormat.format(date)
 }

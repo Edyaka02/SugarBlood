@@ -22,3 +22,17 @@ val ColorSecondario = Color(0xFF001C55)
 val ColorButton = Color(0xFF0A2472)
 val ColorIcon = Color(0xFF0E6BA8)
 val ColorTextoSecondario = Color(0xFFA6E1FA)
+
+
+//val Color1 = Color(0xFF020024)
+//val Color2 = Color(0xFF090979)
+//val Color3 = Color(0xFF00d4ff)
+
+//val Color1 = Color(0xFF2193b0)
+//val Color2 = Color(0xFF6dd5ed)
+//val Color3 = Color(0xFFb8e2f2)
+
+val Color1 = Color(0xFF034170) // Azul oscuro
+val Color2 = Color(0xFF0a0672) // Azul oscuro
+val Color3 = Color(0xFF00a6cc) // Azul brillante oscuro
+

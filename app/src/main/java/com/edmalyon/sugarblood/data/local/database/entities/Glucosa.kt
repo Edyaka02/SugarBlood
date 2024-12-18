@@ -18,9 +18,9 @@ import androidx.room.PrimaryKey
 data class Glucosa(
     @PrimaryKey(autoGenerate = true) val id_glucosa: Int = 0,
     val tiempo_glucosa: Long,
-    val momento_glucosa: String,
+    val momento_glucosa: String?,
     val valor_glucosa: Float,
-    val peso_glucosa: Float,
-    val nota_glucosa: String,
+    val peso_glucosa: Float?,
+    val nota_glucosa: String?,
     val id_usuario: Int
 )

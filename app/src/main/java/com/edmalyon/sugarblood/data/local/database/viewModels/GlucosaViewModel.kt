@@ -3,6 +3,8 @@ package com.edmalyon.sugarblood.data.local.database.viewModels
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edmalyon.sugarblood.data.local.database.entities.Glucosa
@@ -26,6 +28,16 @@ class GlucosaViewModel @Inject constructor(
         }
     }
 
+    fun obtenerGlucosaPorId(glucosaId: Int): MutableLiveData<Glucosa?> {
+        val glucosa = MutableLiveData<Glucosa?>()
+        viewModelScope.launch {
+            val glucosaObtenida = glucosaRepository.obtenerGlucosa(glucosaId)
+            glucosa.value = glucosaObtenida
+        }
+        return glucosa
+    }
+
+
     fun insertarGlucosa(glucosa: Glucosa) {
         viewModelScope.launch {
             try {
@@ -43,4 +55,11 @@ class GlucosaViewModel @Inject constructor(
         }
     }
 
+    fun actualizarGlucosa(glucosa: Glucosa) {
+        viewModelScope.launch {
+            glucosaRepository.actualizarGlucosa(glucosa)
+            obtenerGlucosaPorUsuario(glucosa.id_usuario) // Actualiza la lista después de editar }
+
+        }
+    }
 }
