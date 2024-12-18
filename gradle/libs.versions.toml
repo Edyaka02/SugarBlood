@@ -15,6 +15,7 @@ materialIconsOutlined = "<latest-version>"
 roomRxjava2 = "2.6.1"
 runtimeLivedata = "1.7.5"
 navigationCompose = "2.8.4"
+appcompat = "1.7.0"
 
 
 [libraries]
@@ -46,6 +47,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 material-icons-filled = { module = "androidx.compose.material.icons.filled:material-icons-filled", version.ref = "materialIconsFilledVersion" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
