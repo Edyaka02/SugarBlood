@@ -33,7 +33,6 @@ fun AppHost(navController: NavHostController) {
 
     Scaffold(
         bottomBar = {
-            //BottomNavBar(navController = navController)
             if (isAuthenticated && usuarioId != -1) {
                 BottomNavBar(navController = navController, usuarioId = usuarioId)
             }
@@ -46,12 +45,10 @@ fun AppHost(navController: NavHostController) {
         ) {
 
             composable("login") {
-                //val usuarioViewModel = hiltViewModel<UsuarioViewModel>()
-                LoginUsuarioScreen(usuarioViewModel, navController) // Pasar navController
+                LoginUsuarioScreen(usuarioViewModel, navController)
             }
             composable("registrarUsuario") {
-                //val usuarioViewModel = hiltViewModel<UsuarioViewModel>()
-                RegistrarUsuarioScreen(usuarioViewModel, navController) // Pasar navController
+                RegistrarUsuarioScreen(usuarioViewModel, navController)
             }
 
             //--------------------------------------------------------------------------------------
