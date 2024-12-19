@@ -13,6 +13,8 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +36,7 @@ fun BottomNavBar(
     ) {
         // Obtén el ViewModel
         val usuarioViewModel: UsuarioViewModel = viewModel()
+        val usuarioId by usuarioViewModel.usuarioId.observeAsState()
         // Glucosa
         BottomNavigationItem(
             icon = {
@@ -88,37 +91,37 @@ fun BottomNavBar(
 //        )
 
         // Ítem de Configuración
-        BottomNavigationItem(
-            icon = {
-                CustomIcon(
-                    iconResId = R.drawable.perfil,
-                    contentDescription = "Profile"
-                )
-            },
-            //label = { Text("Settings") },
-            selected = false, // Controlar si este ítem está seleccionado
-            onClick = {
-                // Navegar a la pantalla de configuración
-//                navController.navigate("listaGlucosa/${usuarioId}") {
+//        BottomNavigationItem(
+//            icon = {
+//                CustomIcon(
+//                    iconResId = R.drawable.perfil,
+//                    contentDescription = "Profile"
+//                )
+//            },
+//            //label = { Text("Settings") },
+//            selected = false, // Controlar si este ítem está seleccionado
+//            onClick = {
+//                // Navegar a la pantalla de configuración
+////                navController.navigate("listaGlucosa/${usuarioId}") {
+////                    launchSingleTop = true
+////                }
+//                usuarioViewModel.logout()
+//                navController.navigate("login") {
+//
+//                    // Esto asegura que el login será la única pantalla en el backstack
+//                    popUpTo("login") { inclusive = true }
 //                    launchSingleTop = true
 //                }
-                usuarioViewModel.logout()
-                navController.navigate("login") {
-
-                    // Esto asegura que el login será la única pantalla en el backstack
-                    popUpTo("login") { inclusive = true }
-                    launchSingleTop = true
-                }
-            }
-        )
+//            }
+//        )
     }
 }
 
 @Composable
 fun CustomIcon(
-    @DrawableRes iconResId: Int, // Identificador del recurso drawable
+    @DrawableRes iconResId: Int,
     contentDescription: String,
-    modifier: Modifier = Modifier.size(30.dp) // Puedes pasar otros modificadores si es necesario
+    modifier: Modifier = Modifier.size(30.dp)
 ) {
     Image(
         painter = painterResource(iconResId),
